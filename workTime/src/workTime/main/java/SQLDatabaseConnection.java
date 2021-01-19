@@ -16,7 +16,7 @@ public class SQLDatabaseConnection {
 			Statement statement = connection.createStatement();
 			ResultSet resultSet = statement.executeQuery("SELECT * FROM [employee]");
 			while (resultSet.next()) {
-				System.out.println(resultSet);
+				System.out.println(resultSet.getString("name"));
 			}
 			connection.close();
 
