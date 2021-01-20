@@ -41,56 +41,74 @@ public class EmployeeServlet extends BaseServlet {
 
 	@GET
 	@Path("/{id}")
-	public String getById(@PathParam("id") String id) throws Exception {
+	public String getById(@PathParam("id") String id) {
 		String sql = "SELECT * FROM [employee] where id = '" + id + "'";
-		super.getConnection();
-		ResultSet rs = super.executeQuery(sql);
 		String testId = "";
-		while(rs.next()) {
-			testId = rs.getString("id");
-			System.out.println(testId);
+		try {
+			super.getConnection();
+			ResultSet rs = super.executeQuery(sql);
+			while (rs.next()) {
+				testId = rs.getString("id");
+				System.out.println(testId);
+			}
+			super.closeConnection();
+		} catch (Exception e) {
+			System.out.println(e.toString());
 		}
-		super.closeConnection();
-		return "getById:" + testId;
+
+		return "getById : " + testId;
 	}
 
 	@POST
-	public String addEmployee(String id, String name) throws Exception {
+	public String addEmployee() {
+		String name = "XXX XXX";
 		Date date = new Date();
-		String sql = "INSERT INTO [employee]([id], [name], [created_at], [leave_at]) VALUES ('" + id + "', N'" + name + "', '" + date + "', '" + null + "');";
-		super.getConnection();
-		ResultSet rs = super.executeQuery(sql);
-		super.closeConnection();
+		String sql = "INSERT INTO [employee]([name], [created_at]) VALUES (N'" + name
+				+ "', GETDATE());";
+		try {
+			super.getConnection();
+			ResultSet rs = super.executeQuery(sql);
+			super.closeConnection();
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		}
 		return "addEmployee";
 	}
 
 	@PUT
 	@Path("/{id}")
-	public String updateById(@PathParam("id") String id, String name, Date leave_at) throws Exception {
-		String sql = "update [employee] SET ";
-		if(!name.isEmpty() && leave_at != null) {
-			sql += "name = '" + name + "', ";
-			sql += "leave_at = to_date(" + leave_at.toString() + ", yyyy-MM-dd) ";
-		} else if(!name.isEmpty() && leave_at == null) {
-			sql += "name = '" + name + "' ";
-		} else if(name.isEmpty() && leave_at != null) {
-			sql += "leave_at = to_date(" + leave_at.toString() + ", yyyy-MM-dd) ";
-		}
-		
-		sql += "where id = '" + id + "'";
-		super.getConnection();
-		ResultSet rs = super.executeQuery(sql);
-		super.closeConnection();
-		return "updateById" + id;
+	public String updateById(@PathParam("id") String id) {
+//		String sql = "update [employee] SET ";
+//		if (!name.isEmpty() && leave_at != null) {
+//			sql += "name = '" + name + "', ";
+//			sql += "leave_at = to_date(" + leave_at.toString() + ", yyyy-MM-dd) ";
+//		} else if (!name.isEmpty() && leave_at == null) {
+//			sql += "name = '" + name + "' ";
+//		} else if (name.isEmpty() && leave_at != null) {
+//			sql += "leave_at = to_date(" + leave_at.toString() + ", yyyy-MM-dd) ";
+//		}
+//		sql += "where id = '" + id + "'";
+//		try {
+//			super.getConnection();
+//			ResultSet rs = super.executeQuery(sql);
+//			super.closeConnection();
+//		} catch (Exception e) {
+//			System.out.println(e.toString());
+//		}
+		return "updateById : " + id;
 	}
 
 	@DELETE
 	@Path("/{id}")
-	public String deleteById(@PathParam("id") String id) throws Exception {
+	public String deleteById(@PathParam("id") String id) {
 		String sql = "delete from [employee] where id = '" + id + "'";
-		super.getConnection();
-		ResultSet rs = super.executeQuery(sql);
-		super.closeConnection();
-		return "deleteById" + id;
+		try {
+			super.getConnection();
+			ResultSet rs = super.executeQuery(sql);
+			super.closeConnection();
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		}
+		return "deleteById : " + id;
 	}
 }
