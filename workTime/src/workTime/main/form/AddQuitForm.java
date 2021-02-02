@@ -1,17 +1,22 @@
-package workTime.main.model;
+package workTime.main.form;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Date;
+import java.util.Set;
+import java.util.UUID;
 
-public class BaseForm implements Serializable {	
-	private String id;	
-	private int type;
+public class AddQuitForm implements Serializable {	
+	private String id;
+	private String type;
 	private String createBy;
 	private String approveBy;
 	private String agent_id;
 	private String note;
 	private Timestamp create_at;
 	private Timestamp last_modified_at;
+	private String reason;
+	private Timestamp quit_date;
 	
 	public String getId() {
 		return this.id;
@@ -21,11 +26,11 @@ public class BaseForm implements Serializable {
 		this.id = id;
 	}
 	
-	public int getType() {
+	public String getType() {
 		return this.type;
 	}
 	
-	public void setType(int type) {
+	public void setType(String type) {
 		this.type = type;
 	}
 	
@@ -75,5 +80,21 @@ public class BaseForm implements Serializable {
 	
 	public void setLastModifiedAt(Timestamp last_modified_at) {
 		this.last_modified_at = last_modified_at;
+	}
+	
+	public String getReason() {
+		return this.reason;
+	}
+	
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
+	
+	public Timestamp getQuitDate() {
+		return this.quit_date;
+	}
+	
+	public void setQuitDate(Timestamp quit_date) {
+		this.quit_date = quit_date;
 	}
 }

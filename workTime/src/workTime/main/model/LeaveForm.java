@@ -1,16 +1,14 @@
 package workTime.main.model;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.Set;
-import java.util.UUID;
+import java.sql.Timestamp;
 
 public class LeaveForm implements Serializable {	
 	private String id;	
-	private String type;
+	private int type;
 	private String reason;
-	private Date dateFrom;
-	private Date dateTo;
+	private Timestamp dateFrom;
+	private Timestamp dateTo;
 	
 	public String getId() {
 		return this.id;
@@ -20,11 +18,11 @@ public class LeaveForm implements Serializable {
 		this.id = id;
 	}
 	
-	public String getType() {
+	public int getType() {
 		return this.type;
 	}
 	
-	public void setType(String type) {
+	public void setType(int type) {
 		this.type = type;
 	}
 	
@@ -36,19 +34,19 @@ public class LeaveForm implements Serializable {
 		this.reason = reason;
 	}
 	
-	public Date getDateFrom() {
+	public Timestamp getDateFrom() {
 		return this.dateFrom;
 	}
 	
-	public void setDateFrom(Date dateFrom) {
+	public void setDateFrom(Timestamp dateFrom) {
 		this.dateFrom = dateFrom;
 	}
 	
-	public Date getDateTo() {
+	public Timestamp getDateTo() {
 		return this.dateTo;
 	}
 	
-	public void setDateTo(Date dateTo) {
+	public void setDateTo(Timestamp dateTo) {
 		this.dateTo = dateTo;
 	}
 }

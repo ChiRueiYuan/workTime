@@ -1,15 +1,13 @@
 package workTime.main.model;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.Set;
-import java.util.UUID;
+import java.sql.Timestamp;
 
 public class TimeClockRecord implements Serializable {	
 	private String id;	
 	private String type;
 	private String employee_id;
-	private Date createAt;
+	private Timestamp createAt;
 	
 	public String getId() {
 		return this.id;
@@ -35,11 +33,11 @@ public class TimeClockRecord implements Serializable {
 		this.employee_id = employee_id;
 	}
 	
-	public Date getCreateAt() {
+	public Timestamp getCreateAt() {
 		return this.createAt;
 	}
 	
-	public void setCreateAt(Date createAt) {
+	public void setCreateAt(Timestamp createAt) {
 		this.createAt = createAt;
 	}
 }

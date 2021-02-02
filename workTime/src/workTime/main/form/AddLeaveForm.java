@@ -1,32 +1,28 @@
-package workTime.main.model;
+package workTime.main.form;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Date;
+import java.util.Set;
+import java.util.UUID;
 
-public class BaseForm implements Serializable {	
-	private String id;	
-	private int type;
+public class AddLeaveForm implements Serializable {	
+	private String leaveType;
 	private String createBy;
-	private String approveBy;
 	private String agent_id;
 	private String note;
 	private Timestamp create_at;
 	private Timestamp last_modified_at;
+	private String reason;
+	private Timestamp dateFrom;
+	private Timestamp dateTo;
 	
-	public String getId() {
-		return this.id;
+	public String getLeaveType() {
+		return this.leaveType;
 	}
 	
-	public void setId(String id) {
-		this.id = id;
-	}
-	
-	public int getType() {
-		return this.type;
-	}
-	
-	public void setType(int type) {
-		this.type = type;
+	public void setLeaveType(String leaveType) {
+		this.leaveType = leaveType;
 	}
 	
 	public String getCreateBy() {
@@ -35,14 +31,6 @@ public class BaseForm implements Serializable {
 	
 	public void setCreateBy(String createBy) {
 		this.createBy = createBy;
-	}
-	
-	public String getApproveBy() {
-		return this.approveBy;
-	}
-	
-	public void setApproveBy(String approveBy) {
-		this.approveBy = approveBy;
 	}
 	
 	public String getAgentId() {
@@ -75,5 +63,29 @@ public class BaseForm implements Serializable {
 	
 	public void setLastModifiedAt(Timestamp last_modified_at) {
 		this.last_modified_at = last_modified_at;
+	}
+	
+	public String getReason() {
+		return this.reason;
+	}
+	
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
+	
+	public Timestamp getDateFrom() {
+		return this.dateFrom;
+	}
+	
+	public void setDateFrom(Timestamp dateFrom) {
+		this.dateFrom = dateFrom;
+	}
+	
+	public Timestamp getDateTo() {
+		return this.dateTo;
+	}
+	
+	public void setDateTo(Timestamp dateTo) {
+		this.dateTo = dateTo;
 	}
 }
