@@ -22,11 +22,8 @@ public class FormController<T> extends BaseController {
 	FormServiceImpl<T> formService = new FormServiceImpl<T>();
 	
 	@GET
-	public Response getPaginationByQuery() {
+	public Response getPaginationByQuery(@QueryParam("page") int page, @QueryParam("size") int size) {
 		super.getConnection();
-		int page = 1;
-		int size = 10;
-		
 		ArrayList<BaseForm> formList = formService.getPaginationByQuery(conn, page, size);
 		super.closeConnection();
 		return super.OK(formList);
@@ -42,6 +39,7 @@ public class FormController<T> extends BaseController {
 	}
 
 	@POST
+	@Path("/addLeaveForm")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addLeaveForm(AddLeaveForm addLeaveForm) {
 		super.getConnection();
@@ -51,6 +49,7 @@ public class FormController<T> extends BaseController {
 	}
 	
 	@POST
+	@Path("/addQuitForm")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addQuitForm(AddQuitForm addQuitForm) {
 		super.getConnection();

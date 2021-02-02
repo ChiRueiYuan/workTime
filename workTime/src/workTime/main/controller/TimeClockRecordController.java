@@ -17,10 +17,8 @@ public class TimeClockRecordController<T> extends BaseController {
 	TimeClockRecordService<T> timeClockRecordService;
 	
 	@GET
-	public Response getPaginationByQuery() {
-		int page = 1;
-		int size = 10;
-		
+	public Response getPaginationByQuery(@QueryParam("page") int page, @QueryParam("size") int size) {
+		super.getConnection();
 		ArrayList<TimeClockRecord> employeeList = timeClockRecordService.getPaginationByQuery(conn, page, size);
 		super.closeConnection();
 		return super.OK(employeeList);
@@ -29,6 +27,7 @@ public class TimeClockRecordController<T> extends BaseController {
 	@GET
 	@Path("/{id}")
 	public Response getById(@PathParam("id") String id) {
+		super.getConnection();
 		TimeClockRecord timeClockRecord = timeClockRecordService.getById(conn, id);
 		super.closeConnection();
 		return super.OK(timeClockRecord);

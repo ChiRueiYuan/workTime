@@ -190,7 +190,7 @@ public class FormDaoImpl<T> extends BaseDaoImpl<T> implements FormDao<T> {
 	};
 	
 	public void approveById(Connection conn, String id,ApproveForm approveForm) {
-		String sql = "update [base_form] SET approved_by = '" + approveForm.getApprovedBy() + "', last_modified_at = GETDATE()";
+		String sql = "update [base_form] SET approved_by = '" + approveForm.getApprovedBy() + "' where id = '" + id + "'";
 				
 		try {
 			super.executeQuery(conn, sql);

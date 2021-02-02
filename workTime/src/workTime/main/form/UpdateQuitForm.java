@@ -9,7 +9,6 @@ import java.util.UUID;
 public class UpdateQuitForm implements Serializable {	
 	private String agent_id;
 	private String note;
-	private Timestamp last_modified_at;
 	private String reason;
 	private Timestamp quit_date;
 	
@@ -27,14 +26,6 @@ public class UpdateQuitForm implements Serializable {
 	
 	public void setNote(String note) {
 		this.note = note;
-	}
-	
-	public Timestamp getLastModifiedAt() {
-		return this.last_modified_at;
-	}
-	
-	public void setLastModifiedAt(Timestamp last_modified_at) {
-		this.last_modified_at = last_modified_at;
 	}
 	
 	public String getReason() {

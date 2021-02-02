@@ -10,7 +10,6 @@ public class UpdateLeaveForm implements Serializable {
 	private String leaveType;
 	private String agent_id;
 	private String note;
-	private Timestamp last_modified_at;
 	private String reason;
 	private Timestamp dateFrom;
 	private Timestamp dateTo;
@@ -37,14 +36,6 @@ public class UpdateLeaveForm implements Serializable {
 	
 	public void setNote(String note) {
 		this.note = note;
-	}
-	
-	public Timestamp getLastModifiedAt() {
-		return this.last_modified_at;
-	}
-	
-	public void setLastModifiedAt(Timestamp last_modified_at) {
-		this.last_modified_at = last_modified_at;
 	}
 	
 	public String getReason() {

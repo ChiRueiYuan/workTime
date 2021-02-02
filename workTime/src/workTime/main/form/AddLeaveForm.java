@@ -2,17 +2,12 @@ package workTime.main.form;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Date;
-import java.util.Set;
-import java.util.UUID;
 
 public class AddLeaveForm implements Serializable {	
 	private String leaveType;
 	private String createBy;
 	private String agent_id;
 	private String note;
-	private Timestamp create_at;
-	private Timestamp last_modified_at;
 	private String reason;
 	private Timestamp dateFrom;
 	private Timestamp dateTo;
@@ -47,22 +42,6 @@ public class AddLeaveForm implements Serializable {
 	
 	public void setNote(String note) {
 		this.note = note;
-	}
-	
-	public Timestamp getCreateAt() {
-		return this.create_at;
-	}
-	
-	public void setCreateAt(Timestamp create_at) {
-		this.create_at = create_at;
-	}
-	
-	public Timestamp getLastModifiedAt() {
-		return this.last_modified_at;
-	}
-	
-	public void setLastModifiedAt(Timestamp last_modified_at) {
-		this.last_modified_at = last_modified_at;
 	}
 	
 	public String getReason() {
