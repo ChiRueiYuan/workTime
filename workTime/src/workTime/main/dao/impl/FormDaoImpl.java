@@ -2,6 +2,7 @@ package workTime.main.dao.impl;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -14,8 +15,6 @@ import workTime.main.form.UpdateQuitForm;
 import workTime.main.model.BaseForm;
 
 public class FormDaoImpl<T> extends BaseDaoImpl<T> implements FormDao<T> {
-	FormDao<T> formDao = new FormDaoImpl<T>();
-	
 	public ArrayList<BaseForm> getPaginationByQuery(Connection conn, int page, int size) {
 		ResultSet resultSet = null;
 		int offset = (page-1)*size;
@@ -74,20 +73,27 @@ public class FormDaoImpl<T> extends BaseDaoImpl<T> implements FormDao<T> {
 	public String addLeaveForm(Connection conn, AddLeaveForm addLeaveForm) {
 		String id = UUID.randomUUID().toString();
 		int type = 1;
-		String createdBy = addLeaveForm.getCreateBy().toString();
-		String agentId = addLeaveForm.getAgentId().toString();
+		Timestamp time= new Timestamp(System.currentTimeMillis());
+		String createdBy = addLeaveForm.getCreateBy();
+		String agentId = addLeaveForm.getAgentId();
 		String note = addLeaveForm.getNote();
-		String leaveType = addLeaveForm.getReason();
-		String reason = addLeaveForm.getLeaveType();
-		String dateFrom = addLeaveForm.getDateFrom().toString();
-		String dateTo = addLeaveForm.getDateTo().toString();
+		int leaveType = addLeaveForm.getLeaveType();
+		String reason = addLeaveForm.getReason();
+		Timestamp dateFrom = Timestamp.valueOf(addLeaveForm.getDateFrom());
+		Timestamp dateTo = Timestamp.valueOf(addLeaveForm.getDateTo());
+		ArrayList leaveFormParameterList = new ArrayList();
+		leaveFormParameterList.add(id);
+		leaveFormParameterList.add(leaveType);
+		leaveFormParameterList.add(reason);
+		leaveFormParameterList.add(dateFrom);
+		leaveFormParameterList.add(dateTo);
 		String baseFormSql = "INSERT INTO [base_form]([id], [type], [created_by], [agent_id], [note]) "
 				+ "VALUES ('" + id + "', '" + type + "', '" + createdBy + "', '" + agentId + "', '" + note + "')";
 		String leaveFormSql = "INSERT INTO [leave_form]([id], [type], [reason], [from], [to]) "
-				+ "VALUES ('" + id + "', '" + leaveType + "', '" + reason + "', TO_TIMESTAMP('" + dateFrom + "','YYYY-MM-DD HH:MI:SS.FF'), TO_TIMESTAMP('" + dateTo + "','YYYY-MM-DD HH:MI:SS.FF'))";
+				+ "VALUES (?, ?, ?, ?, ?)";
 		try {
 			super.insert(conn, baseFormSql);
-			super.insert(conn, leaveFormSql);
+			super.insertLeaveForm(conn, leaveFormSql, leaveFormParameterList);
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}

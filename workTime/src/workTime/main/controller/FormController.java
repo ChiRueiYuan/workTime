@@ -17,13 +17,12 @@ import java.util.*;
 
 @Path("/forms")
 public class FormController<T> extends BaseController {
-	Connection conn = super.getConnection();
+	Connection conn = getConnection();
 	
 	FormServiceImpl<T> formService = new FormServiceImpl<T>();
 	
 	@GET
 	public Response getPaginationByQuery(@QueryParam("page") int page, @QueryParam("size") int size) {
-		super.getConnection();
 		ArrayList<BaseForm> formList = formService.getPaginationByQuery(conn, page, size);
 		super.closeConnection();
 		return super.OK(formList);
@@ -32,7 +31,6 @@ public class FormController<T> extends BaseController {
 	@GET
 	@Path("/{id}")
 	public Response getById(@PathParam("id") String id) {
-		super.getConnection();
 		BaseForm baseForm = formService.getById(conn, id);
 		super.closeConnection();
 		return super.OK(baseForm);
@@ -42,7 +40,6 @@ public class FormController<T> extends BaseController {
 	@Path("/addLeaveForm")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addLeaveForm(AddLeaveForm addLeaveForm) {
-		super.getConnection();
 		String primaryKey = formService.addLeaveForm(conn, addLeaveForm);
 		super.closeConnection();
 		return super.OK(primaryKey);
@@ -52,7 +49,6 @@ public class FormController<T> extends BaseController {
 	@Path("/addQuitForm")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addQuitForm(AddQuitForm addQuitForm) {
-		super.getConnection();
 		String primaryKey = formService.addQuitForm(conn, addQuitForm);
 		super.closeConnection();
 		return super.OK(primaryKey);
@@ -61,7 +57,6 @@ public class FormController<T> extends BaseController {
 	@PUT
 	@Path("/{id}/leave")
 	public Response updateLeaveFormById(@PathParam("id") String id, UpdateLeaveForm updateLeaveForm) {
-		super.getConnection();
 		formService.updateLeaveFormById(conn, id, updateLeaveForm);
 		super.closeConnection();
 		return super.OK(updateLeaveForm);
@@ -70,7 +65,6 @@ public class FormController<T> extends BaseController {
 	@PUT
 	@Path("/{id}/quit")
 	public Response updateQuitFormById(@PathParam("id") String id, UpdateQuitForm updateQuitForm) {
-		super.getConnection();
 		formService.updateQuitFormById(conn, id, updateQuitForm);
 		super.closeConnection();
 		return super.OK(updateQuitForm);
@@ -79,7 +73,6 @@ public class FormController<T> extends BaseController {
 	@PUT
 	@Path("/{id}/approve")
 	public Response approveById(@PathParam("id") String id,ApproveForm approveForm) {
-		super.getConnection();
 		formService.approveById(conn, id, approveForm);
 		super.closeConnection();
 		return super.OK(approveForm);
@@ -88,7 +81,6 @@ public class FormController<T> extends BaseController {
 	@DELETE
 	@Path("/{id}")
 	public String deleteById(@PathParam("id") String id) {
-		super.getConnection();
 		formService.deleteById(conn, id);
 		super.closeConnection();
 		return "deleteById : " + id;
