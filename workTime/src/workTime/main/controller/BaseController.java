@@ -35,6 +35,7 @@ public class BaseController {
     }
     
     protected Response OK(Object value) {
+    	this.closeConnection();
     	return Response.ok(value).build();
     }
 }

@@ -6,6 +6,5 @@ import java.util.ArrayList;
 
 public interface BaseDao<T> {
 	ResultSet executeQuery(Connection conn, String query);
-	void insert(Connection conn, String query);
-	void insertLeaveForm(Connection conn, String query, ArrayList parameter);
+	void executeUpdate(Connection conn, String query, ArrayList parameter);
 }

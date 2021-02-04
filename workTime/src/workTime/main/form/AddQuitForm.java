@@ -6,10 +6,10 @@ import java.sql.Timestamp;
 public class AddQuitForm implements Serializable {	
 	private String type;
 	private String createBy;
-	private String agent_id;
+	private String agentId;
 	private String note;
 	private String reason;
-	private Timestamp quit_date;
+	private String quitDate;
 	
 	public String getType() {
 		return this.type;
@@ -28,11 +28,11 @@ public class AddQuitForm implements Serializable {
 	}
 	
 	public String getAgentId() {
-		return this.agent_id;
+		return this.agentId;
 	}
 	
-	public void setAgentId(String agent_id) {
-		this.agent_id = agent_id;
+	public void setAgentId(String agentId) {
+		this.agentId = agentId;
 	}
 	
 	public String getNote() {
@@ -51,11 +51,11 @@ public class AddQuitForm implements Serializable {
 		this.reason = reason;
 	}
 	
-	public Timestamp getQuitDate() {
-		return this.quit_date;
+	public String getQuitDate() {
+		return this.quitDate;
 	}
 	
-	public void setQuitDate(Timestamp quit_date) {
-		this.quit_date = quit_date;
+	public void setQuitDate(String quitDate) {
+		this.quitDate = quitDate;
 	}
 }

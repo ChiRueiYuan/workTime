@@ -2,6 +2,7 @@ package workTime.main.dao.impl;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -64,7 +65,7 @@ public class EmployeeDaoImpl<T> extends BaseDaoImpl<T> implements EmployeeDao<T>
 		String sql = "INSERT INTO [employee]([id], [name]) VALUES ('" + id + "', '" + name + "')";
 
 		try {
-			super.insert(conn, sql);
+			super.executeUpdate(conn, sql, null);
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
@@ -73,19 +74,22 @@ public class EmployeeDaoImpl<T> extends BaseDaoImpl<T> implements EmployeeDao<T>
 	}
 	
 	public void updateById(Connection conn, String id,UpdateEmployeeForm updateEmployeeForm) {
+		ArrayList employeeFormParameterList = new ArrayList();
 		StringBuilder condition = new StringBuilder();
 		condition.append("update [employee] SET ");
 		if (!updateEmployeeForm.getName().isEmpty()) {
 			condition.append("name = '").append(updateEmployeeForm.getName()).append("', ");
 		}
 		if (updateEmployeeForm.getLeaveAt() != null) {
-			condition.append("leave_at = TO_TIMESTAMP('").append(updateEmployeeForm.getLeaveAt().toString()).append("',  'YYYY-MM-DD HH:MI:SS.FF'), ");
+			condition.append("leave_at = ?, ");
+			Timestamp leaveDate = Timestamp.valueOf(updateEmployeeForm.getLeaveAt());
+			employeeFormParameterList.add(leaveDate);
 		}
 		condition.deleteCharAt(condition.lastIndexOf(","));
 		condition.append("where id = '").append(id).append("' ");
 		String sql = condition.toString();
 		try {
-			super.executeQuery(conn, sql);
+			super.executeUpdate(conn, sql, employeeFormParameterList);
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}

@@ -8,11 +8,11 @@ import java.util.UUID;
 
 public class UpdateLeaveForm implements Serializable {	
 	private String leaveType;
-	private String agent_id;
+	private String agentId;
 	private String note;
 	private String reason;
-	private Timestamp dateFrom;
-	private Timestamp dateTo;
+	private String dateFrom;
+	private String dateTo;
 	
 	public String getLeaveType() {
 		return this.leaveType;
@@ -23,11 +23,11 @@ public class UpdateLeaveForm implements Serializable {
 	}
 	
 	public String getAgentId() {
-		return this.agent_id;
+		return this.agentId;
 	}
 	
-	public void setAgentId(String agent_id) {
-		this.agent_id = agent_id;
+	public void setAgentId(String agentId) {
+		this.agentId = agentId;
 	}
 	
 	public String getNote() {
@@ -46,19 +46,19 @@ public class UpdateLeaveForm implements Serializable {
 		this.reason = reason;
 	}
 	
-	public Timestamp getDateFrom() {
+	public String getDateFrom() {
 		return this.dateFrom;
 	}
 	
-	public void setDateFrom(Timestamp dateFrom) {
+	public void setDateFrom(String dateFrom) {
 		this.dateFrom = dateFrom;
 	}
 	
-	public Timestamp getDateTo() {
+	public String getDateTo() {
 		return this.dateTo;
 	}
 	
-	public void setDateTo(Timestamp dateTo) {
+	public void setDateTo(String dateTo) {
 		this.dateTo = dateTo;
 	}
 }

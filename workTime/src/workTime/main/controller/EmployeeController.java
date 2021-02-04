@@ -15,24 +15,18 @@ import java.util.*;
 
 @Path("/employees")
 public class EmployeeController<T> extends BaseController {
-	Connection conn = super.getConnection();
-	
 	EmployeeService<T> employeeService = new EmployeeServiceImpl<T>();
 	
 	@GET
 	public Response getPaginationByQuery(@QueryParam("page") int page, @QueryParam("size") int size) {
-		super.getConnection();
-		ArrayList<Employee> employeeList = employeeService.getPaginationByQuery(conn, page, size);
-		super.closeConnection();
+		ArrayList<Employee> employeeList = employeeService.getPaginationByQuery(getConnection(), page, size);
 		return super.OK(employeeList);
 	}
 
 	@GET
 	@Path("/{id}")
 	public Response getById(@PathParam("id") String id) {
-		super.getConnection();
-		Employee employee = employeeService.getById(conn, id);
-		super.closeConnection();
+		Employee employee = employeeService.getById(getConnection(), id);
 		return super.OK(employee);
 	}
 
@@ -40,27 +34,21 @@ public class EmployeeController<T> extends BaseController {
 	@Path("/addEmployee")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addEmployee(AddEmployeeForm addEmployeeForm) {
-		super.getConnection();
-		String primaryKey = employeeService.addEmployee(conn, addEmployeeForm);
-		super.closeConnection();
+		String primaryKey = employeeService.addEmployee(getConnection(), addEmployeeForm);
 		return super.OK(primaryKey);
 	}
 
 	@PUT
 	@Path("/{id}")
 	public Response updateById(@PathParam("id") String id,UpdateEmployeeForm updateEmployeeForm) {
-		super.getConnection();
-		employeeService.updateById(conn, id, updateEmployeeForm);
-		super.closeConnection();
+		employeeService.updateById(getConnection(), id, updateEmployeeForm);
 		return super.OK(updateEmployeeForm);
 	}
 
 	@DELETE
 	@Path("/{id}")
 	public String deleteById(@PathParam("id") String id) {
-		super.getConnection();
-		employeeService.deleteById(conn, id);
-		super.closeConnection();
+		employeeService.deleteById(getConnection(), id);
 		return "deleteById : " + id;
 	}
 }

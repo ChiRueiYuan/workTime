@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 public class UpdateEmployeeForm {	
 	private String name;
-	private Timestamp leave_at;
+	private String leaveAt;
 	
 	public String getName() {
 		return this.name;
@@ -14,11 +14,11 @@ public class UpdateEmployeeForm {
 		this.name = name;
 	}
 	
-	public Timestamp getLeaveAt() {
-		return this.leave_at;
+	public String getLeaveAt() {
+		return this.leaveAt;
 	}
 	
-	public void setLeaveAt(Timestamp leave_at) {
-		this.leave_at = leave_at;
+	public void setLeaveAt(String leaveAt) {
+		this.leaveAt = leaveAt;
 	}
 }

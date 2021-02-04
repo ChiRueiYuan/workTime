@@ -73,7 +73,6 @@ public class FormDaoImpl<T> extends BaseDaoImpl<T> implements FormDao<T> {
 	public String addLeaveForm(Connection conn, AddLeaveForm addLeaveForm) {
 		String id = UUID.randomUUID().toString();
 		int type = 1;
-		Timestamp time= new Timestamp(System.currentTimeMillis());
 		String createdBy = addLeaveForm.getCreateBy();
 		String agentId = addLeaveForm.getAgentId();
 		String note = addLeaveForm.getNote();
@@ -92,8 +91,8 @@ public class FormDaoImpl<T> extends BaseDaoImpl<T> implements FormDao<T> {
 		String leaveFormSql = "INSERT INTO [leave_form]([id], [type], [reason], [from], [to]) "
 				+ "VALUES (?, ?, ?, ?, ?)";
 		try {
-			super.insert(conn, baseFormSql);
-			super.insertLeaveForm(conn, leaveFormSql, leaveFormParameterList);
+			super.executeUpdate(conn, baseFormSql, null);
+			super.executeUpdate(conn, leaveFormSql, leaveFormParameterList);
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
@@ -108,14 +107,18 @@ public class FormDaoImpl<T> extends BaseDaoImpl<T> implements FormDao<T> {
 		String agentId = addQuitForm.getAgentId().toString();
 		String note = addQuitForm.getNote();
 		String reason = addQuitForm.getReason();
-		String quitDate = addQuitForm.getQuitDate().toString();
+		Timestamp quitDate = Timestamp.valueOf(addQuitForm.getQuitDate());
+		ArrayList quitFormParameterList = new ArrayList();
+		quitFormParameterList.add(id);
+		quitFormParameterList.add(reason);
+		quitFormParameterList.add(quitDate);
 		String baseFormSql = "INSERT INTO [base_form]([id], [type], [created_by], [agent_id], [note]) "
 				+ "VALUES ('" + id + "', '" + type + "', '" + createdBy + "', '" + agentId + "', '" + note + "')";
 		String quitFormSql = "INSERT INTO [quit_form]([id], [reason], [estimated_quit_date]) "
-				+ "VALUES ('" + id + "', '" + reason + "', TO_TIMESTAMP('" + quitDate + "','YYYY-MM-DD HH:MI:SS.FF'))";
+				+ "VALUES (?, ?, ?)";
 		try {
-			super.insert(conn, baseFormSql);
-			super.insert(conn, quitFormSql);
+			super.executeUpdate(conn, baseFormSql, null);
+			super.executeUpdate(conn, quitFormSql, quitFormParameterList);
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
@@ -125,6 +128,7 @@ public class FormDaoImpl<T> extends BaseDaoImpl<T> implements FormDao<T> {
 	
 	public void updateLeaveFormById(Connection conn, String id,UpdateLeaveForm updateLeaveForm) {
 		StringBuilder baseFormCondition = new StringBuilder();
+		
 		baseFormCondition.append("update [base_form] SET ");
 		if (!updateLeaveForm.getAgentId().isEmpty()) {
 			baseFormCondition.append("agent_id = '").append(updateLeaveForm.getAgentId()).append("', ");
@@ -132,10 +136,11 @@ public class FormDaoImpl<T> extends BaseDaoImpl<T> implements FormDao<T> {
 		if (!updateLeaveForm.getNote().isEmpty()) {
 			baseFormCondition.append("note = '").append(updateLeaveForm.getNote()).append("', ");
 		}
-		baseFormCondition.append("last_modified_at = GETDATE() ");
+		baseFormCondition.deleteCharAt(baseFormCondition.lastIndexOf(","));
 		baseFormCondition.append("where id = '").append(id).append("' ");
 		String baseFormSql = baseFormCondition.toString();
 		
+		ArrayList leaveFormParameterList = new ArrayList();
 		StringBuilder leaveFormCondition = new StringBuilder();
 		leaveFormCondition.append("update [leave_form] SET ");
 		if (updateLeaveForm.getLeaveType() != null) {
@@ -145,10 +150,14 @@ public class FormDaoImpl<T> extends BaseDaoImpl<T> implements FormDao<T> {
 			leaveFormCondition.append("reason = '").append(updateLeaveForm.getReason()).append("', ");
 		}
 		if (updateLeaveForm.getDateFrom() != null) {
-			leaveFormCondition.append("from = TO_TIMESTAMP('").append(updateLeaveForm.getDateFrom().toString()).append("', 'YYYY-MM-DD HH:MI:SS.FF'), ");
+			leaveFormCondition.append("from = ?, ");
+			Timestamp dateFrom = Timestamp.valueOf(updateLeaveForm.getDateFrom());
+			leaveFormParameterList.add(dateFrom);
 		}
 		if (updateLeaveForm.getDateTo() != null) {
-			leaveFormCondition.append("to = TO_TIMESTAMP('").append(updateLeaveForm.getDateTo().toString()).append("', 'YYYY-MM-DD HH:MI:SS.FF'), ");
+			leaveFormCondition.append("to = ?, ");
+			Timestamp dateTo = Timestamp.valueOf(updateLeaveForm.getDateTo());
+			leaveFormParameterList.add(dateTo);
 		}
 		leaveFormCondition.deleteCharAt(leaveFormCondition.lastIndexOf(","));
 		leaveFormCondition.append("where id = '").append(id).append("' ");
@@ -156,7 +165,7 @@ public class FormDaoImpl<T> extends BaseDaoImpl<T> implements FormDao<T> {
 		
 		try {
 			super.executeQuery(conn, baseFormSql);
-			super.executeQuery(conn, leaveFormSql);
+			super.executeUpdate(conn, leaveFormSql, leaveFormParameterList);
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
@@ -171,17 +180,21 @@ public class FormDaoImpl<T> extends BaseDaoImpl<T> implements FormDao<T> {
 		if (!updateQuitForm.getNote().isEmpty()) {
 			baseFormCondition.append("note = '").append(updateQuitForm.getNote()).append("', ");
 		}
-		baseFormCondition.append("last_modified_at = GETDATE() ");
+		baseFormCondition.deleteCharAt(baseFormCondition.lastIndexOf(","));
 		baseFormCondition.append("where id = '").append(id).append("' ");
 		String baseFormSql = baseFormCondition.toString();
 		
+		ArrayList quitFormParameterList = new ArrayList();
 		StringBuilder quitFormCondition = new StringBuilder();
-		quitFormCondition.append("update [leave_form] SET ");
+		quitFormCondition.append("update [quit_form] SET ");
 		if (!updateQuitForm.getReason().isEmpty()) {
 			quitFormCondition.append("reason = '").append(updateQuitForm.getReason()).append("', ");
 		}
 		if (updateQuitForm.getQuitDate() != null) {
-			quitFormCondition.append("estimated_quit_date = TO_TIMESTAMP('").append(updateQuitForm.getQuitDate().toString()).append("', 'YYYY-MM-DD HH:MI:SS.FF'), ");
+			quitFormCondition.append("estimated_quit_date = ?, ");
+			Timestamp quitDate = Timestamp.valueOf(updateQuitForm.getQuitDate());
+			quitFormParameterList.add(quitDate);
+			
 		}
 		quitFormCondition.deleteCharAt(quitFormCondition.lastIndexOf(","));
 		quitFormCondition.append("where id = '").append(id).append("' ");
@@ -189,7 +202,7 @@ public class FormDaoImpl<T> extends BaseDaoImpl<T> implements FormDao<T> {
 		
 		try {
 			super.executeQuery(conn, baseFormSql);
-			super.executeQuery(conn, quitFormSql);
+			super.executeUpdate(conn, quitFormSql, quitFormParameterList);
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}

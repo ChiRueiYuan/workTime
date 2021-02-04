@@ -12,24 +12,20 @@ import java.util.*;
 
 @Path("/timeClockRecords")
 public class TimeClockRecordController<T> extends BaseController {
-	Connection conn = super.getConnection();
-	
 	TimeClockRecordService<T> timeClockRecordService;
 	
 	@GET
 	public Response getPaginationByQuery(@QueryParam("page") int page, @QueryParam("size") int size) {
-		super.getConnection();
-		ArrayList<TimeClockRecord> employeeList = timeClockRecordService.getPaginationByQuery(conn, page, size);
-		super.closeConnection();
+		ArrayList<TimeClockRecord> employeeList = timeClockRecordService.getPaginationByQuery(getConnection(), page, size);
+		closeConnection();
 		return super.OK(employeeList);
 	}
 
 	@GET
 	@Path("/{id}")
 	public Response getById(@PathParam("id") String id) {
-		super.getConnection();
-		TimeClockRecord timeClockRecord = timeClockRecordService.getById(conn, id);
-		super.closeConnection();
+		TimeClockRecord timeClockRecord = timeClockRecordService.getById(getConnection(), id);
+		closeConnection();
 		return super.OK(timeClockRecord);
 	}
 }

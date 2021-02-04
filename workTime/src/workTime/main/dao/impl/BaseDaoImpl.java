@@ -25,28 +25,41 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
         return resultSet;
     }
     
-    public void insert(Connection conn, String query) {
+    public void executeUpdate(Connection conn, String query, ArrayList parameter) {
     	PreparedStatement preparedStatement = null;
 		try {
 			preparedStatement = conn.prepareStatement(query);
+			if(parameter != null) {
+//				this.setParameter(preparedStatement, parameter);
+				for(int i = 0; i < parameter.size(); i++) {
+	        		if(parameter.get(i) instanceof java.lang.Integer) {
+	        			preparedStatement.setInt(i+1, (int) parameter.get(i));
+	        		} else if(parameter.get(i) instanceof java.lang.String) {
+	        			preparedStatement.setString(i+1, (String) parameter.get(i));
+	        		} else if(parameter.get(i) instanceof java.sql.Timestamp) {
+	        			preparedStatement.setTimestamp(i+1, (Timestamp) parameter.get(i));
+	        		} 
+	        	}
+			}
 			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
     }
     
-    public void insertLeaveForm(Connection conn, String query, ArrayList parameter) {
-    	PreparedStatement preparedStatement = null;
-		try {
-			preparedStatement = conn.prepareStatement(query);
-			preparedStatement.setString(1, (String) parameter.get(0));
-			preparedStatement.setInt(2, (int) parameter.get(1));
-			preparedStatement.setString(3, (String) parameter.get(2));
-			preparedStatement.setTimestamp(4, (Timestamp) parameter.get(3));
-			preparedStatement.setTimestamp(5, (Timestamp) parameter.get(4));
-			preparedStatement.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-    }
+//    private void setParameter(PreparedStatement preparedStatement, ArrayList parameter) {
+//    	try {
+//    		for(int i = 0; i < parameter.size(); i++) {
+//        		if(parameter.get(i) instanceof java.lang.Integer) {
+//        			preparedStatement.setInt(i+1, (int) parameter.get(i));
+//        		} else if(parameter.get(i) instanceof java.lang.String) {
+//        			preparedStatement.setString(i+1, (String) parameter.get(i));
+//        		} else if(parameter.get(i) instanceof java.sql.Timestamp) {
+//        			preparedStatement.setTimestamp(i+1, (Timestamp) parameter.get(i));
+//        		} 
+//        	}
+//    	} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//    }
 }
