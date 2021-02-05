@@ -12,7 +12,7 @@ public class ApproveForm implements Serializable {
 		return this.approvedBy;
 	}
 	
-	public void setApprovedById(String approvedById) {
-		this.approvedBy = approvedById;
+	public void setApprovedBy(String approvedBy) {
+		this.approvedBy = approvedBy;
 	}
 }

@@ -77,7 +77,7 @@ public class EmployeeDaoImpl<T> extends BaseDaoImpl<T> implements EmployeeDao<T>
 		ArrayList employeeFormParameterList = new ArrayList();
 		StringBuilder condition = new StringBuilder();
 		condition.append("update [employee] SET ");
-		if (!updateEmployeeForm.getName().isEmpty()) {
+		if (updateEmployeeForm.getName() != null && !updateEmployeeForm.getName().equals("")) {
 			condition.append("name = '").append(updateEmployeeForm.getName()).append("', ");
 		}
 		if (updateEmployeeForm.getLeaveAt() != null) {

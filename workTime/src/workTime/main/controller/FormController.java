@@ -64,7 +64,7 @@ public class FormController<T> extends BaseController {
 	
 	@PUT
 	@Path("/{id}/approve")
-	public Response approveById(@PathParam("id") String id,ApproveForm approveForm) {
+	public Response approveById(@PathParam("id") String id, ApproveForm approveForm) {
 		formService.approveById(getConnection(), id, approveForm);
 		return super.OK(approveForm);
 	}

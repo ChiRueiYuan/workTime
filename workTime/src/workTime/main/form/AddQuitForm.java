@@ -4,20 +4,11 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 public class AddQuitForm implements Serializable {	
-	private String type;
 	private String createBy;
 	private String agentId;
 	private String note;
 	private String reason;
 	private String quitDate;
-	
-	public String getType() {
-		return this.type;
-	}
-	
-	public void setType(String type) {
-		this.type = type;
-	}
 	
 	public String getCreateBy() {
 		return this.createBy;

@@ -27,6 +27,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
     
     public void executeUpdate(Connection conn, String query, ArrayList parameter) {
     	PreparedStatement preparedStatement = null;
+    	ResultSet resultSet = null;
 		try {
 			preparedStatement = conn.prepareStatement(query);
 			if(parameter != null) {

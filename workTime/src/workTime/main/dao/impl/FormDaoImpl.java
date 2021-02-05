@@ -32,8 +32,8 @@ public class FormDaoImpl<T> extends BaseDaoImpl<T> implements FormDao<T> {
 				baseForm.setId(resultSet.getString("id"));
 				baseForm.setType(resultSet.getInt("type"));
 				baseForm.setCreateBy(resultSet.getString("created_by"));
-				baseForm.setApproveBy(resultSet.getString("approved-by"));
-				baseForm.setAgentId(resultSet.getString("agent-id"));
+				baseForm.setApproveBy(resultSet.getString("approved_by"));
+				baseForm.setAgentId(resultSet.getString("agent_id"));
 				baseForm.setNote(resultSet.getString("note"));
 				baseForm.setCreateAt(resultSet.getTimestamp("created_at"));
 				baseForm.setLastModifiedAt(resultSet.getTimestamp("last_modified_at"));
@@ -57,8 +57,8 @@ public class FormDaoImpl<T> extends BaseDaoImpl<T> implements FormDao<T> {
 				baseForm.setId(resultSet.getString("id"));
 				baseForm.setType(resultSet.getInt("type"));
 				baseForm.setCreateBy(resultSet.getString("created_by"));
-				baseForm.setApproveBy(resultSet.getString("approved-by"));
-				baseForm.setAgentId(resultSet.getString("agent-id"));
+				baseForm.setApproveBy(resultSet.getString("approved_by"));
+				baseForm.setAgentId(resultSet.getString("agent_id"));
 				baseForm.setNote(resultSet.getString("note"));
 				baseForm.setCreateAt(resultSet.getTimestamp("created_at"));
 				baseForm.setLastModifiedAt(resultSet.getTimestamp("last_modified_at"));
@@ -130,10 +130,10 @@ public class FormDaoImpl<T> extends BaseDaoImpl<T> implements FormDao<T> {
 		StringBuilder baseFormCondition = new StringBuilder();
 		
 		baseFormCondition.append("update [base_form] SET ");
-		if (!updateLeaveForm.getAgentId().isEmpty()) {
+		if (updateLeaveForm.getAgentId() != null && !updateLeaveForm.getAgentId().equals("")) {
 			baseFormCondition.append("agent_id = '").append(updateLeaveForm.getAgentId()).append("', ");
 		}
-		if (!updateLeaveForm.getNote().isEmpty()) {
+		if (updateLeaveForm.getNote() != null && !updateLeaveForm.getNote().equals("")) {
 			baseFormCondition.append("note = '").append(updateLeaveForm.getNote()).append("', ");
 		}
 		baseFormCondition.deleteCharAt(baseFormCondition.lastIndexOf(","));
@@ -146,7 +146,7 @@ public class FormDaoImpl<T> extends BaseDaoImpl<T> implements FormDao<T> {
 		if (updateLeaveForm.getLeaveType() != null) {
 			leaveFormCondition.append("type = ").append(updateLeaveForm.getLeaveType()).append(", ");
 		}
-		if (!updateLeaveForm.getReason().isEmpty()) {
+		if (updateLeaveForm.getReason() != null && !updateLeaveForm.getReason().equals("")) {
 			leaveFormCondition.append("reason = '").append(updateLeaveForm.getReason()).append("', ");
 		}
 		if (updateLeaveForm.getDateFrom() != null) {
@@ -174,10 +174,10 @@ public class FormDaoImpl<T> extends BaseDaoImpl<T> implements FormDao<T> {
 	public void updateQuitFormById(Connection conn, String id,UpdateQuitForm updateQuitForm) {
 		StringBuilder baseFormCondition = new StringBuilder();
 		baseFormCondition.append("update [base_form] SET ");
-		if (!updateQuitForm.getAgentId().isEmpty()) {
+		if (updateQuitForm.getAgentId() != null && !updateQuitForm.getAgentId().equals("")) {
 			baseFormCondition.append("agent_id = '").append(updateQuitForm.getAgentId()).append("', ");
 		}
-		if (!updateQuitForm.getNote().isEmpty()) {
+		if (updateQuitForm.getNote() != null && !updateQuitForm.getNote().equals("")) {
 			baseFormCondition.append("note = '").append(updateQuitForm.getNote()).append("', ");
 		}
 		baseFormCondition.deleteCharAt(baseFormCondition.lastIndexOf(","));
@@ -187,7 +187,7 @@ public class FormDaoImpl<T> extends BaseDaoImpl<T> implements FormDao<T> {
 		ArrayList quitFormParameterList = new ArrayList();
 		StringBuilder quitFormCondition = new StringBuilder();
 		quitFormCondition.append("update [quit_form] SET ");
-		if (!updateQuitForm.getReason().isEmpty()) {
+		if (updateQuitForm.getReason() != null && !updateQuitForm.getReason().equals("")) {
 			quitFormCondition.append("reason = '").append(updateQuitForm.getReason()).append("', ");
 		}
 		if (updateQuitForm.getQuitDate() != null) {
@@ -209,10 +209,11 @@ public class FormDaoImpl<T> extends BaseDaoImpl<T> implements FormDao<T> {
 	};
 	
 	public void approveById(Connection conn, String id,ApproveForm approveForm) {
-		String sql = "update [base_form] SET approved_by = '" + approveForm.getApprovedBy() + "' where id = '" + id + "'";
-				
+		ArrayList approveFormParameterList = new ArrayList();
+		String sql = "update [base_form] SET approved_by = ? where id = '" + id + "'";
+		approveFormParameterList.add(approveForm.getApprovedBy());
 		try {
-			super.executeQuery(conn, sql);
+			super.executeUpdate(conn, sql, approveFormParameterList);
 		} catch (Exception e) {
 			System.out.println(e.toString());
 		}
