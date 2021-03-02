@@ -12,6 +12,28 @@ import workTime.main.form.UpdateEmployeeForm;
 import workTime.main.model.Employee;
 
 public class EmployeeDaoImpl<T> extends BaseDaoImpl<T> implements EmployeeDao<T> {
+	public ArrayList<Employee> getAll(Connection conn) {
+		ResultSet resultSet = null;
+		String sql = "SELECT * FROM [employee] ";
+		
+		ArrayList<Employee> employeeList = new ArrayList<>();
+		
+		try {
+			resultSet = super.executeQuery(conn, sql);
+			while (resultSet.next()) {
+				Employee employee = new Employee();
+				employee.setId(resultSet.getString("id"));
+				employee.setName(resultSet.getString("name"));
+				employee.setCreatedAt(resultSet.getTimestamp("created_at"));
+				employee.setLeaveAt(resultSet.getTimestamp("leave_at"));
+				employeeList.add(employee);
+			}
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		}
+		return employeeList;
+	}
+	
 	public ArrayList<Employee> getPaginationByQuery(Connection conn, int page, int size) {
 		ResultSet resultSet = null;
 		int offset = (page-1)*size;

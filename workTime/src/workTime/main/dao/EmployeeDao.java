@@ -8,6 +8,7 @@ import workTime.main.form.UpdateEmployeeForm;
 import workTime.main.model.Employee;
 
 public interface EmployeeDao<T> {
+	public ArrayList<Employee> getAll(Connection conn);
 	public ArrayList<Employee> getPaginationByQuery(Connection conn, int page, int size);
 	public Employee getById(Connection conn, String id);
 	public String addEmployee(Connection conn, AddEmployeeForm addEmployeeForm);

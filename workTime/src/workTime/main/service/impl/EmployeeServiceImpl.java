@@ -13,6 +13,11 @@ import workTime.main.service.EmployeeService;
 public class EmployeeServiceImpl<T> implements EmployeeService<T> {
 	EmployeeDao<T> employeeDao = new EmployeeDaoImpl<T>();
 	
+	public ArrayList<Employee> getAll(Connection conn) {
+		ArrayList<Employee> employeeList = employeeDao.getAll(conn);
+		return employeeList;
+	}
+	
 	public ArrayList<Employee> getPaginationByQuery(Connection conn, int page, int size) {
 		ArrayList<Employee> employeeList = employeeDao.getPaginationByQuery(conn, page, size);
 		return employeeList;
