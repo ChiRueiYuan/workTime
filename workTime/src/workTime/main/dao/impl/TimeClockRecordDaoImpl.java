@@ -11,10 +11,8 @@ public class TimeClockRecordDaoImpl<T> extends BaseDaoImpl<T> implements TimeClo
 	public ArrayList<TimeClockRecord> getPaginationByQuery(Connection conn, int page, int size) {
 		ResultSet resultSet = null;
 		int offset = (page-1)*size;
-		String sql = "SELECT TOP " + size + " * FROM [time_clock_record] ";
-		if(offset != 0) {
-			sql += "OFFSET " + offset;
-		}
+		String sql = "SELECT * FROM [time_clock_record] "
+				+ "ORDER BY created_at ASC OFFSET " + offset + " ROWS FETCH NEXT " + size + " ROWS ONLY";
 		
 		ArrayList<TimeClockRecord> timeClockRecordList = new ArrayList<>();
 		

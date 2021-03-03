@@ -37,10 +37,8 @@ public class EmployeeDaoImpl<T> extends BaseDaoImpl<T> implements EmployeeDao<T>
 	public ArrayList<Employee> getPaginationByQuery(Connection conn, int page, int size) {
 		ResultSet resultSet = null;
 		int offset = (page-1)*size;
-		String sql = "SELECT TOP " + size + " * FROM [employee] ";
-		if(offset != 0) {
-			sql += "OFFSET " + offset;
-		}
+		String sql = "SELECT * FROM [employee] "
+				+ "ORDER BY created_at ASC OFFSET " + offset + " ROWS FETCH NEXT " + size + " ROWS ONLY";
 		
 		ArrayList<Employee> employeeList = new ArrayList<>();
 		

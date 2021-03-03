@@ -18,10 +18,8 @@ public class FormDaoImpl<T> extends BaseDaoImpl<T> implements FormDao<T> {
 	public ArrayList<BaseForm> getPaginationByQuery(Connection conn, int page, int size) {
 		ResultSet resultSet = null;
 		int offset = (page-1)*size;
-		String sql = "SELECT TOP " + size + " * FROM [base_form] ";
-		if(offset != 0) {
-			sql += "OFFSET " + offset;
-		}
+		String sql = "SELECT * FROM [base_form] "
+				+ "ORDER BY created_at ASC OFFSET " + offset + " ROWS FETCH NEXT " + size + " ROWS ONLY";
 		
 		ArrayList<BaseForm> baseFormList = new ArrayList<>();
 		

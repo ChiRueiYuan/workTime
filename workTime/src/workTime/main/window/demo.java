@@ -25,7 +25,7 @@ import javax.swing.JComboBox;
 public class demo extends BaseController {
 	EmployeeService employeeService = new EmployeeServiceImpl<>();
 
-	private JFrame frame;
+	JFrame frame;
 	URL url = null;
 	InputStream inputStream = null;
 	InputStreamReader inputStreamReader = null;
@@ -67,7 +67,7 @@ public class demo extends BaseController {
 		ArrayList<Employee> allEmployees = employeeService.getAll(getConnection());
 		
 		JComboBox comboBox = new JComboBox();
-		comboBox.setBounds(14, 13, 404, 25);
+		comboBox.setBounds(14, 0, 404, 25);
 		frame.getContentPane().add(comboBox);
 		for(Employee employee : allEmployees) {
 			comboBox.addItem(employee.getId());
@@ -75,7 +75,7 @@ public class demo extends BaseController {
 		
 		JTextArea textArea = new JTextArea();
 		JScrollPane scrollingArea = new JScrollPane(textArea);
-		scrollingArea.setBounds(14, 13, 404, 164);
+		scrollingArea.setBounds(14, 20, 404, 164);
 		frame.getContentPane().add(scrollingArea);
 		
 		JButton btnNewButton = new JButton("Get by id.");
@@ -92,7 +92,7 @@ public class demo extends BaseController {
 				}  
 			}
 		});
-		btnNewButton.setBounds(14, 198, 200, 50);
+		btnNewButton.setBounds(14, 235, 200, 50);
 		frame.getContentPane().add(btnNewButton);
 	}
 }
