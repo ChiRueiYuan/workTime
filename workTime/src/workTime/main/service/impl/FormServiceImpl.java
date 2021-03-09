@@ -11,10 +11,27 @@ import workTime.main.form.ApproveForm;
 import workTime.main.form.UpdateLeaveForm;
 import workTime.main.form.UpdateQuitForm;
 import workTime.main.model.BaseForm;
+import workTime.main.model.LeaveForm;
+import workTime.main.model.QuitForm;
 import workTime.main.service.FormService;
 
 public class FormServiceImpl<T> implements FormService<T> {
 	FormDao<T> formDao = new FormDaoImpl<T>();
+	
+	public ArrayList<BaseForm> getAllBaseForm(Connection conn) {
+		ArrayList<BaseForm> baseFormList = formDao.getAllBaseForm(conn);
+		return baseFormList;
+	};
+	
+	public ArrayList<LeaveForm> getAllLeaveForm(Connection conn) {
+		ArrayList<LeaveForm> leaveFormList = formDao.getAllLeaveForm(conn);
+		return leaveFormList;
+	};
+	
+	public ArrayList<QuitForm> getAllQuitForm(Connection conn) {
+		ArrayList<QuitForm> quitFormList = formDao.getAllQuitForm(conn);
+		return quitFormList;
+	};
 	
 	public ArrayList<BaseForm> getPaginationByQuery(Connection conn, int page, int size) {
 		ArrayList<BaseForm> formList = formDao.getPaginationByQuery(conn, page, size);
@@ -24,6 +41,16 @@ public class FormServiceImpl<T> implements FormService<T> {
 	public BaseForm getById(Connection conn, String id) {
 		BaseForm baseForm = formDao.getById(conn, id);
 		return baseForm;
+	};
+	
+	public LeaveForm getLeaveFormById(Connection conn, String id) {
+		LeaveForm leaveForm = formDao.getLeaveFormById(conn, id);
+		return leaveForm;
+	};
+	
+	public QuitForm getQuitFormById(Connection conn, String id) {
+		QuitForm quitForm = formDao.getQuitFormById(conn, id);
+		return quitForm;
 	};
 	
 	public String addLeaveForm(Connection conn, AddLeaveForm addLeaveForm) {

@@ -7,25 +7,26 @@ import javax.ws.rs.core.Response;
 
 import workTime.main.model.TimeClockRecord;
 import workTime.main.service.TimeClockRecordService;
+import workTime.main.service.impl.TimeClockRecordServiceImpl;
 
 import java.util.*;
 
 @Path("/timeClockRecords")
 public class TimeClockRecordController<T> extends BaseController {
-	TimeClockRecordService<T> timeClockRecordService;
+	TimeClockRecordService<T> timeClockRecordService = new TimeClockRecordServiceImpl<>();
 	
 	@GET
 	public Response getPaginationByQuery(@QueryParam("page") int page, @QueryParam("size") int size) {
-		ArrayList<TimeClockRecord> employeeList = timeClockRecordService.getPaginationByQuery(getConnection(), page, size);
-		closeConnection();
-		return super.OK(employeeList);
+		Connection connection = getConnection();
+		ArrayList<TimeClockRecord> timeClockRecordList = timeClockRecordService.getPaginationByQuery(connection, page, size);
+		return super.OK(connection, timeClockRecordList);
 	}
 
 	@GET
 	@Path("/{id}")
 	public Response getById(@PathParam("id") String id) {
-		TimeClockRecord timeClockRecord = timeClockRecordService.getById(getConnection(), id);
-		closeConnection();
-		return super.OK(timeClockRecord);
+		Connection connection = getConnection();
+		TimeClockRecord timeClockRecord = timeClockRecordService.getById(connection, id);
+		return super.OK(connection, timeClockRecord);
 	}
 }

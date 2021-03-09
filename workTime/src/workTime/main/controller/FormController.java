@@ -21,58 +21,66 @@ public class FormController<T> extends BaseController {
 	
 	@GET
 	public Response getPaginationByQuery(@QueryParam("page") int page, @QueryParam("size") int size) {
-		ArrayList<BaseForm> formList = formService.getPaginationByQuery(getConnection(), page, size);
-		return super.OK(formList);
+		Connection connection = getConnection();
+		ArrayList<BaseForm> formList = formService.getPaginationByQuery(connection, page, size);
+		return super.OK(connection, formList);
 	}
 
 	@GET
 	@Path("/{id}")
 	public Response getById(@PathParam("id") String id) {
-		BaseForm baseForm = formService.getById(getConnection(), id);
-		return super.OK(baseForm);
+		Connection connection = getConnection();
+		BaseForm baseForm = formService.getById(connection, id);
+		return super.OK(connection, baseForm);
 	}
 
 	@POST
 	@Path("/addLeaveForm")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addLeaveForm(AddLeaveForm addLeaveForm) {
-		String primaryKey = formService.addLeaveForm(getConnection(), addLeaveForm);
-		return super.OK(primaryKey);
+		Connection connection = getConnection();
+		String primaryKey = formService.addLeaveForm(connection, addLeaveForm);
+		return super.OK(connection, primaryKey);
 	}
 	
 	@POST
 	@Path("/addQuitForm")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addQuitForm(AddQuitForm addQuitForm) {
-		String primaryKey = formService.addQuitForm(getConnection(), addQuitForm);
-		return super.OK(primaryKey);
+		Connection connection = getConnection();
+		String primaryKey = formService.addQuitForm(connection, addQuitForm);
+		return super.OK(connection, primaryKey);
 	}
 
 	@PUT
 	@Path("/{id}/leave")
 	public Response updateLeaveFormById(@PathParam("id") String id, UpdateLeaveForm updateLeaveForm) {
-		formService.updateLeaveFormById(getConnection(), id, updateLeaveForm);
-		return super.OK(updateLeaveForm);
+		Connection connection = getConnection();
+		formService.updateLeaveFormById(connection, id, updateLeaveForm);
+		return super.OK(connection, updateLeaveForm);
 	}
 	
 	@PUT
 	@Path("/{id}/quit")
 	public Response updateQuitFormById(@PathParam("id") String id, UpdateQuitForm updateQuitForm) {
-		formService.updateQuitFormById(getConnection(), id, updateQuitForm);
-		return super.OK(updateQuitForm);
+		Connection connection = getConnection();
+		formService.updateQuitFormById(connection, id, updateQuitForm);
+		return super.OK(connection, updateQuitForm);
 	}
 	
 	@PUT
 	@Path("/{id}/approve")
 	public Response approveById(@PathParam("id") String id, ApproveForm approveForm) {
-		formService.approveById(getConnection(), id, approveForm);
-		return super.OK(approveForm);
+		Connection connection = getConnection();
+		formService.approveById(connection, id, approveForm);
+		return super.OK(connection, approveForm);
 	}
 
 	@DELETE
 	@Path("/{id}")
 	public String deleteById(@PathParam("id") String id) {
-		formService.deleteById(getConnection(), id);
+		Connection connection = getConnection();
+		formService.deleteById(connection, id);
 		return "deleteById : " + id;
 	}
 }

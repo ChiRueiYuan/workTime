@@ -8,6 +8,29 @@ import workTime.main.dao.TimeClockRecordDao;
 import workTime.main.model.TimeClockRecord;
 
 public class TimeClockRecordDaoImpl<T> extends BaseDaoImpl<T> implements TimeClockRecordDao<T> {
+	public ArrayList<TimeClockRecord> getAll(Connection conn) {
+		ResultSet resultSet = null;
+		
+		String sql = "SELECT * FROM [time_clock_record] ";
+		
+		ArrayList<TimeClockRecord> timeClockRecordList = new ArrayList<>();
+		
+		try {
+			resultSet = super.executeQuery(conn, sql);
+			while (resultSet.next()) {
+				TimeClockRecord timeClockRecord = new TimeClockRecord();
+				timeClockRecord.setId(resultSet.getString("id"));
+				timeClockRecord.setType(resultSet.getString("type"));
+				timeClockRecord.setEmployeeId(resultSet.getString("employee_id"));
+				timeClockRecord.setCreateAt(resultSet.getTimestamp("created_at"));
+				timeClockRecordList.add(timeClockRecord);
+			}
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		}
+		return timeClockRecordList;
+	}
+	
 	public ArrayList<TimeClockRecord> getPaginationByQuery(Connection conn, int page, int size) {
 		ResultSet resultSet = null;
 		int offset = (page-1)*size;
@@ -23,7 +46,7 @@ public class TimeClockRecordDaoImpl<T> extends BaseDaoImpl<T> implements TimeClo
 				timeClockRecord.setId(resultSet.getString("id"));
 				timeClockRecord.setType(resultSet.getString("type"));
 				timeClockRecord.setEmployeeId(resultSet.getString("employee_id"));
-				timeClockRecord.setCreateAt(resultSet.getTimestamp("createAt"));
+				timeClockRecord.setCreateAt(resultSet.getTimestamp("created_at"));
 				timeClockRecordList.add(timeClockRecord);
 			}
 		} catch (Exception e) {
@@ -44,7 +67,7 @@ public class TimeClockRecordDaoImpl<T> extends BaseDaoImpl<T> implements TimeClo
 				timeClockRecord.setId(resultSet.getString("id"));
 				timeClockRecord.setType(resultSet.getString("type"));
 				timeClockRecord.setEmployeeId(resultSet.getString("employee_id"));
-				timeClockRecord.setCreateAt(resultSet.getTimestamp("createAt"));
+				timeClockRecord.setCreateAt(resultSet.getTimestamp("created_at"));
 			}
 		} catch (Exception e) {
 			System.out.println(e.toString());

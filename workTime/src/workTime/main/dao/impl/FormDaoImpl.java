@@ -13,8 +13,80 @@ import workTime.main.form.ApproveForm;
 import workTime.main.form.UpdateLeaveForm;
 import workTime.main.form.UpdateQuitForm;
 import workTime.main.model.BaseForm;
+import workTime.main.model.LeaveForm;
+import workTime.main.model.QuitForm;
 
 public class FormDaoImpl<T> extends BaseDaoImpl<T> implements FormDao<T> {
+	public ArrayList<BaseForm> getAllBaseForm(Connection conn) {
+		ResultSet resultSet = null;
+		String sql = "SELECT * FROM [base_form] ";
+		
+		ArrayList<BaseForm> baseFormList = new ArrayList<>();
+		
+		try {
+			resultSet = super.executeQuery(conn, sql);
+			while (resultSet.next()) {
+				BaseForm baseForm = new BaseForm();
+				baseForm.setId(resultSet.getString("id"));
+				baseForm.setType(resultSet.getInt("type"));
+				baseForm.setCreateBy(resultSet.getString("created_by"));
+				baseForm.setApproveBy(resultSet.getString("approved_by"));
+				baseForm.setAgentId(resultSet.getString("agent_id"));
+				baseForm.setNote(resultSet.getString("note"));
+				baseForm.setCreateAt(resultSet.getTimestamp("created_at"));
+				baseForm.setLastModifiedAt(resultSet.getTimestamp("last_modified_at"));
+				baseFormList.add(baseForm);
+			}
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		}
+		return baseFormList;
+	}
+	
+	public ArrayList<LeaveForm> getAllLeaveForm(Connection conn) {
+		ResultSet resultSet = null;
+		String sql = "SELECT * FROM [leave_form] ";
+		
+		ArrayList<LeaveForm> leaveFormList = new ArrayList<>();
+		
+		try {
+			resultSet = super.executeQuery(conn, sql);
+			while (resultSet.next()) {
+				LeaveForm leaveForm = new LeaveForm();
+				leaveForm.setId(resultSet.getString("id"));
+				leaveForm.setType(resultSet.getInt("type"));
+				leaveForm.setReason(resultSet.getString("reason"));
+				leaveForm.setDateFrom(resultSet.getTimestamp("from"));
+				leaveForm.setDateTo(resultSet.getTimestamp("to"));
+				leaveFormList.add(leaveForm);
+			}
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		}
+		return leaveFormList;
+	}
+	
+	public ArrayList<QuitForm> getAllQuitForm(Connection conn) {
+		ResultSet resultSet = null;
+		String sql = "SELECT * FROM [quit_form] ";
+		
+		ArrayList<QuitForm> quitFormList = new ArrayList<>();
+		
+		try {
+			resultSet = super.executeQuery(conn, sql);
+			while (resultSet.next()) {
+				QuitForm quitForm = new QuitForm();
+				quitForm.setId(resultSet.getString("id"));
+				quitForm.setReason(resultSet.getString("reason"));
+				quitForm.setQuitDate(resultSet.getTimestamp("estimated_quit_date"));
+				quitFormList.add(quitForm);
+			}
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		}
+		return quitFormList;
+	}
+	
 	public ArrayList<BaseForm> getPaginationByQuery(Connection conn, int page, int size) {
 		ResultSet resultSet = null;
 		int offset = (page-1)*size;
@@ -66,6 +138,48 @@ public class FormDaoImpl<T> extends BaseDaoImpl<T> implements FormDao<T> {
 		}
 		
 		return baseForm;
+	};
+	
+	public LeaveForm getLeaveFormById(Connection conn, String id) {
+		ResultSet resultSet = null;
+		String sql = "SELECT * FROM [leave_form] where id = '" + id + "'";
+		
+		LeaveForm leaveForm = new LeaveForm();
+		
+		try {
+			resultSet = super.executeQuery(conn, sql);
+			while (resultSet.next()) {
+				leaveForm.setId(resultSet.getString("id"));
+				leaveForm.setType(resultSet.getInt("type"));
+				leaveForm.setReason(resultSet.getString("reason"));
+				leaveForm.setDateFrom(resultSet.getTimestamp("from"));
+				leaveForm.setDateTo(resultSet.getTimestamp("to"));
+			}
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		}
+		
+		return leaveForm;
+	};
+	
+	public QuitForm getQuitFormById(Connection conn, String id) {
+		ResultSet resultSet = null;
+		String sql = "SELECT * FROM [quit_form] where id = '" + id + "'";
+		
+		QuitForm quitForm = new QuitForm();
+		
+		try {
+			resultSet = super.executeQuery(conn, sql);
+			while (resultSet.next()) {
+				quitForm.setId(resultSet.getString("id"));
+				quitForm.setReason(resultSet.getString("reason"));
+				quitForm.setQuitDate(resultSet.getTimestamp("estimated_quit_date"));
+			}
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		}
+		
+		return quitForm;
 	};
 	
 	public String addLeaveForm(Connection conn, AddLeaveForm addLeaveForm) {
@@ -141,19 +255,19 @@ public class FormDaoImpl<T> extends BaseDaoImpl<T> implements FormDao<T> {
 		ArrayList leaveFormParameterList = new ArrayList();
 		StringBuilder leaveFormCondition = new StringBuilder();
 		leaveFormCondition.append("update [leave_form] SET ");
-		if (updateLeaveForm.getLeaveType() != null) {
+		if (updateLeaveForm.getLeaveType() >= 1 && updateLeaveForm.getLeaveType() <= 4) {
 			leaveFormCondition.append("type = ").append(updateLeaveForm.getLeaveType()).append(", ");
 		}
 		if (updateLeaveForm.getReason() != null && !updateLeaveForm.getReason().equals("")) {
 			leaveFormCondition.append("reason = '").append(updateLeaveForm.getReason()).append("', ");
 		}
 		if (updateLeaveForm.getDateFrom() != null) {
-			leaveFormCondition.append("from = ?, ");
+			leaveFormCondition.append("[from] = ?, ");
 			Timestamp dateFrom = Timestamp.valueOf(updateLeaveForm.getDateFrom());
 			leaveFormParameterList.add(dateFrom);
 		}
 		if (updateLeaveForm.getDateTo() != null) {
-			leaveFormCondition.append("to = ?, ");
+			leaveFormCondition.append("[to] = ?, ");
 			Timestamp dateTo = Timestamp.valueOf(updateLeaveForm.getDateTo());
 			leaveFormParameterList.add(dateTo);
 		}

@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 
 import java.awt.event.ActionListener;
@@ -11,16 +12,25 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 import workTime.main.controller.BaseController;
+import workTime.main.form.AddLeaveForm;
+import workTime.main.form.UpdateEmployeeForm;
 import workTime.main.model.Employee;
 import workTime.main.service.EmployeeService;
 import workTime.main.service.impl.EmployeeServiceImpl;
 
 import javax.swing.JComboBox;
+import com.toedter.calendar.JDayChooser;
+import com.toedter.calendar.JDateChooser;
+import com.toedter.calendar.JCalendar;
 
 public class demo extends BaseController {
 	EmployeeService employeeService = new EmployeeServiceImpl<>();
@@ -66,33 +76,104 @@ public class demo extends BaseController {
 		
 		ArrayList<Employee> allEmployees = employeeService.getAll(getConnection());
 		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setBounds(14, 0, 404, 25);
-		frame.getContentPane().add(comboBox);
+		JLabel chooseIdLabel = new JLabel("id");
+		chooseIdLabel.setBounds(14, 42, 75, 19);
+		frame.getContentPane().add(chooseIdLabel);
+		
+		JComboBox idComboBox = new JComboBox();
+		idComboBox.setBounds(94, 39, 404, 25);
+		frame.getContentPane().add(idComboBox);
 		for(Employee employee : allEmployees) {
-			comboBox.addItem(employee.getId());
+			idComboBox.addItem(employee.getId());
 		}
 		
-		JTextArea textArea = new JTextArea();
-		JScrollPane scrollingArea = new JScrollPane(textArea);
-		scrollingArea.setBounds(14, 20, 404, 164);
-		frame.getContentPane().add(scrollingArea);
+		JComboBox agentComboBox = new JComboBox();
+		agentComboBox.setBounds(94, 77, 404, 25);
+		frame.getContentPane().add(agentComboBox);
+		for(Employee employee : allEmployees) {
+			agentComboBox.addItem(employee.getId());
+		}
 		
-		JButton btnNewButton = new JButton("Get by id.");
-		btnNewButton.addActionListener(new ActionListener() {
+		JComboBox leaveTypeComboBox = new JComboBox();
+		leaveTypeComboBox.setBounds(94, 152, 136, 25);
+		frame.getContentPane().add(leaveTypeComboBox);
+		for(int i = 1; i < 5; i++) {
+			agentComboBox.addItem(i);
+		}
+		
+		JLabel agentLabel = new JLabel("Agent : ");
+		agentLabel.setBounds(14, 80, 75, 19);
+		frame.getContentPane().add(agentLabel);
+		
+		JLabel fromLabel = new JLabel("From : ");
+		fromLabel.setBounds(14, 120, 83, 19);
+		frame.getContentPane().add(fromLabel);
+		
+		JLabel toLabel = new JLabel("To : ");
+		toLabel.setBounds(251, 120, 83, 19);
+		frame.getContentPane().add(toLabel);
+		
+		JLabel leaveTypeLabel = new JLabel("Leave type : ");
+		leaveTypeLabel.setBounds(14, 150, 83, 19);
+		frame.getContentPane().add(leaveTypeLabel);
+		
+		JLabel leaveReasonLabel = new JLabel("1: Special  2: Sick  3: Official  4: Personal");
+		leaveReasonLabel.setBounds(244, 155, 293, 19);
+		frame.getContentPane().add(leaveReasonLabel);
+		
+		JLabel reasonLabel = new JLabel("Reason : ");
+		reasonLabel.setBounds(14, 186, 449, 19);
+		frame.getContentPane().add(reasonLabel);
+		
+		JLabel noteLabel = new JLabel("Note : ");
+		noteLabel.setBounds(14, 218, 83, 19);
+		frame.getContentPane().add(noteLabel);
+		
+		JTextArea reasonTextArea = new JTextArea();
+		reasonTextArea.setBounds(94, 184, 352, 25);
+		frame.getContentPane().add(reasonTextArea);
+		
+		JTextArea noteTextArea = new JTextArea();
+		noteTextArea.setBounds(94, 216, 352, 25);
+		frame.getContentPane().add(noteTextArea);
+		
+		JDateChooser dateFromChooser = new JDateChooser();
+		dateFromChooser.setBounds(93, 115, 136, 25);
+		frame.getContentPane().add(dateFromChooser);
+		
+		JDateChooser dateToChooser = new JDateChooser();
+		dateToChooser.setBounds(310, 115, 136, 25);
+		frame.getContentPane().add(dateToChooser);
+		
+		JButton updateButton = new JButton("Update");
+		updateButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				textArea.setText("");
-				try {
-					String id = String.valueOf(comboBox.getSelectedItem());
-					Employee employee = employeeService.getById(getConnection(), id);
-					textArea.append("id : " + employee.getId() + "\n");
-					textArea.append("name : " + employee.getName() + "\n");
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}  
+				String id = String.valueOf(idComboBox.getSelectedItem());
+				String agent = String.valueOf(agentComboBox.getSelectedItem());
+				
+				Format format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				long timeFrom = dateFromChooser.getDate().getTime();
+				String dateFrom = format.format(timeFrom);
+				
+				long timeTo = dateToChooser.getDate().getTime();
+				String dateTo = format.format(timeTo);
+				
+				int leaveType = (int)leaveTypeComboBox.getSelectedItem();
+				
+				String reason = reasonTextArea.getText();
+				String note = noteTextArea.getText();
+				
+				AddLeaveForm addLeaveForm = new AddLeaveForm();
+				addLeaveForm.setCreateBy(id);
+				addLeaveForm.setAgentId(agent);
+				addLeaveForm.setLeaveType(leaveType);
+				addLeaveForm.setReason(reason);
+				addLeaveForm.setNote(note);
+				addLeaveForm.setDateFrom(dateFrom);
+				addLeaveForm.setDateTo(dateTo);
 			}
 		});
-		btnNewButton.setBounds(14, 235, 200, 50);
-		frame.getContentPane().add(btnNewButton);
+		updateButton.setBounds(14, 250, 126, 40);
+		frame.getContentPane().add(updateButton);
 	}
 }

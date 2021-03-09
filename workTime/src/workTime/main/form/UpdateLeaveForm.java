@@ -7,18 +7,18 @@ import java.util.Set;
 import java.util.UUID;
 
 public class UpdateLeaveForm implements Serializable {	
-	private String leaveType;
+	private int leaveType;
 	private String agentId;
 	private String note;
 	private String reason;
 	private String dateFrom;
 	private String dateTo;
 	
-	public String getLeaveType() {
+	public int getLeaveType() {
 		return this.leaveType;
 	}
 	
-	public void setLeaveType(String leaveType) {
+	public void setLeaveType(int leaveType) {
 		this.leaveType = leaveType;
 	}
 	

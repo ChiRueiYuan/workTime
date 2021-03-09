@@ -8,34 +8,34 @@ import javax.ws.rs.core.Response;
 
 public class BaseController {
 	private final String CONNECTION_STRING = "jdbc:sqlserver://localhost;database=ruei-circle;integratedSecurity=true;";
-	private Connection connection;
     
     public Connection getConnection() {
-    	if (this.connection == null) {
+    	Connection connection = null;
+    	if (connection == null) {
     		try {
-				this.connection = DriverManager.getConnection(this.CONNECTION_STRING);
+				connection = DriverManager.getConnection(this.CONNECTION_STRING);
 				connection.setAutoCommit(false);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
     	}
-    	return this.connection;
+    	return connection;
     }
     
-    public void closeConnection() {
-    	if (this.connection != null) {
+    public void closeConnection(Connection connection) {
+    	if (connection != null) {
     		try {
     			connection.commit();
     			connection.setAutoCommit(true);
-				this.connection.close();
+				connection.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
     	}
     }
     
-    protected Response OK(Object value) {
-    	this.closeConnection();
+    protected Response OK(Connection connection, Object value) {
+    	this.closeConnection(connection);
     	return Response.ok(value).build();
     }
 }
